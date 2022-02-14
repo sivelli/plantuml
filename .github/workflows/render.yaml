@@ -1,6 +1,17 @@
-    - name: Render PlantUML to wiki
-      uses: frederikheld/render-plantuml-to-wiki-action@v1.0.1
-      with:
-        WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
-        INPUT_DIR: 'diagrams'
-        OUTPUT_DIR: 'out'
+name: Render
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2 
+
+      - name: Render PlantUML to wiki
+        uses: frederikheld/render-plantuml-to-wiki-action@v1.0.1
+        with:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+          INPUT_DIR: 'diagrams'
+          OUTPUT_DIR: 'out'
