@@ -1,4 +1,4 @@
-@startuml
+@startuml Test
 
 A -> B++: Call
 return response
