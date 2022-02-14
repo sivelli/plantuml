@@ -1,0 +1,6 @@
+@startuml
+
+A -> B++: Call
+return response
+
+@enduml
