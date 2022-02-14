@@ -1,0 +1,8 @@
+@startuml System detailed
+
+A -> B++: Call
+B -> C++: Call
+return response
+return response
+
+@enduml
