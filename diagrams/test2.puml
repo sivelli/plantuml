@@ -1,8 +1,9 @@
 @startuml System detailed
-
+activate A
 A -> B++: Call
 B -> C++: Call
 return response
 return response
+deactivate A
 
 @enduml
