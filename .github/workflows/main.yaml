@@ -12,4 +12,4 @@ jobs:
         uses: ./.github/actions/render
         id: render_arquitetura
         with:
-          args: '-tsvg diagrams/*.puml -o ./out/diagrams/'
+          args: '-v -tsvg diagrams/*.puml -o ./out/diagrams/'
