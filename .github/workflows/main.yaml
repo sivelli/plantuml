@@ -8,8 +8,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Render arquitetura
+      - name: Render arquitetura 1
         uses: ./.github/actions/render
-        id: render_arquitetura
+        id: render_arquitetura_1
         with:
-          args: '-v -tsvg diagrams/*.puml -o ./out/diagrams/'
+          args: '-v -tsvg diagrams/test.puml -o ./out/diagrams/'
+
+      - name: Render arquitetura 2
+        uses: ./.github/actions/render
+        id: render_arquitetura_2
+        with:
+          args: '-v -tsvg diagrams/test2.puml -o ./out/diagrams/'
