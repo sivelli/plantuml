@@ -1,0 +1,7 @@
+name: 'render'
+description: 'Render plantuml diagrams'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+  

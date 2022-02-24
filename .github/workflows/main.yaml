@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  render_uml:
+    runs-on: ubuntu-latest
+    name: Render all diagrams
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Render arquitetura
+        uses: ./.github/actions/render
+        id: render_arquitetura
+        with:
+          args: '-tsvg diagrams/*.puml -o ./out/diagrams/'
