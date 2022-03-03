@@ -1,7 +1,41 @@
-@startuml Test
+@startuml TestC4
 
-A -> B++: Call
-return response
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
 
+!include DEVICONS/java.puml
+!include DEVICONS/mongodb.puml
+!include DEVICONS/mysql.puml
+!include DEVICONS/react.puml
+!include DEVICONS/google_cloud_platform.puml
 
-@enduml
+SHOW_PERSON_PORTRAIT()
+'LAYOUT_WITH_LEGEND()
+LAYOUT_LEFT_RIGHT()
+AddElementTag("SaaS", $bgColor="8080e0")
+
+Boundary(produto, "Produto", "product") {
+
+	Person(user, "Cliente", "Cliente")
+	Person(admin, "Administrador", "Administrador do sistema")
+	Person(support, "Sustentação", "Sustentação")
+	Person(growth, "Growth", "Gerencia campanhas")
+	System(system, "Sistema", "Sistema")
+	Boundary(bdQueue, "Filas e Armazenamento") {
+		SystemDb(mongoDB, "MongoDB Database", "Base de dados principal", "mongodb", $tags="SaaS")
+		SystemDb(mySQL, "mySql Database", "Base de dados", "mysql", $tags="SaaS")
+		SystemDb(bucketStorage, "Google Cloud Storage", "Storage de arquivos", "google_cloud_platform", $tags="SaaS")
+		SystemQueue(cloudampq, "Filas CloudAMQP", "Sistema de filas usado para comunicação assíncrona entre serviços", $tags="SaaS")
+		SystemQueue(gcpPubSub, "GCP Pub/Sub", "Sistema usado para publicação de eventos", "google_cloud_platform", $tags="SaaS")
+	}
+}
+
+Rel(user, system, "Usa App do")
+Rel(system, cloudampq, "Envio de eventos")
+Rel(system, bdQueue, "Le e escreve dados no")
+Rel(admin, gcpPubSub, "Le e escreve dados no")
+Rel(growth, mySQL, "Le e escreve dados no")
+Rel(support, mongoDB, "Le e escreve dados no")
+
+SHOW_LEGEND()
