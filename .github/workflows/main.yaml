@@ -19,3 +19,16 @@ jobs:
         id: render_arquitetura_2
         with:
           args: '-v -tsvg diagrams/test2.puml -o ./out/diagrams/'
+
+      - name: list files
+        run: ls -lsR
+
+      - name: Copy to google drive
+        uses: ./.github/actions/googledrive
+        id: googledrive
+        with:
+          credentials: ${{ secrets.DRIVEDOC_CREDENTIALS }}
+          filename: "./out/diagrams/System detailed.svg"
+          name: "DOC_teste.svg"
+          folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
+          overwrite: "true"
