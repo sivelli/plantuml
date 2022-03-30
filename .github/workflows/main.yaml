@@ -25,10 +25,20 @@ jobs:
 
       - name: Copy to google drive
         uses: ./.github/actions/googledrive
-        id: googledrive
         with:
           credentials: ${{ secrets.DRIVEDOC_CREDENTIALS }}
           filename: "./diagrams/out/diagrams/System detailed.svg"
           name: "DOC_teste.svg"
           folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
           overwrite: "true"
+          mimeType: "image/svg+xml"
+
+      - name: Copy to google drive
+        uses: ./.github/actions/googledrive
+        with:
+          credentials: ${{ secrets.DRIVEDOC_CREDENTIALS }}
+          filename: "./diagrams/out/diagrams/TestC4.svg"
+          name: "DOC_teste2.svg"
+          folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
+          overwrite: "true"
+          mimeType: "image/svg+xml"

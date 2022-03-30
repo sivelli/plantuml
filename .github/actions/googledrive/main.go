@@ -29,9 +29,10 @@ const (
 	folderIdInput    = "folderId"
 	credentialsInput = "credentials"
 	overwrite        = "false"
+	mimeTypeInput    = "mimeType"
 )
 
-func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFile *drive.File, name string) {
+func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFile *drive.File, name string, mimeType string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		githubactions.Fatalf(fmt.Sprintf("opening file with filename: %v failed with error: %v", filename, err))
@@ -39,13 +40,15 @@ func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFi
 
 	if driveFile != nil {
 		f := &drive.File{
-			Name: file.Name(),
+			Name:     file.Name(),
+			MimeType: mimeType,
 		}
 		_, err = svc.Files.Update(driveFile.Id, f).AddParents(folderId).Media(file).Do()
 	} else {
 		f := &drive.File{
-			Name:    name,
-			Parents: []string{folderId},
+			Name:     name,
+			MimeType: mimeType,
+			Parents:  []string{folderId},
 		}
 		_, err = svc.Files.Create(f).Media(file).Do()
 	}
@@ -82,6 +85,9 @@ func main() {
 	if folderId == "" {
 		missingInput(folderIdInput)
 	}
+
+	// get filename argument from action input
+	mimeType := githubactions.GetInput(mimeTypeInput)
 
 	// get base64 encoded credentials argument from action input
 	credentials := githubactions.GetInput(credentialsInput)
@@ -141,13 +147,13 @@ func main() {
 
 		if currentFile == nil {
 			fmt.Println("No similar files found. Creating a new file")
-			uploadToDrive(svc, filename, folderId, nil, name)
+			uploadToDrive(svc, filename, folderId, nil, name, mimeType)
 		} else {
 			fmt.Printf("Overwriting file: %s (%s)\n", currentFile.Name, currentFile.Id)
-			uploadToDrive(svc, filename, folderId, currentFile, "")
+			uploadToDrive(svc, filename, folderId, currentFile, "", mimeType)
 		}
 	} else {
-		uploadToDrive(svc, filename, folderId, nil, name)
+		uploadToDrive(svc, filename, folderId, nil, name, mimeType)
 	}
 }
 

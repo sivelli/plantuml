@@ -20,6 +20,9 @@ inputs:
   overwrite:
     description: 'if you want to overwrite an existing file in Google Drive '
     required: false
+  mimeType:
+    description: 'file MimeType'
+    required: false
   
 
 runs:
