@@ -28,7 +28,7 @@ jobs:
         id: googledrive
         with:
           credentials: ${{ secrets.DRIVEDOC_CREDENTIALS }}
-          filename: "./out/diagrams/System detailed.svg"
+          filename: "./diagrams/out/diagrams/System detailed.svg"
           name: "DOC_teste.svg"
           folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
           overwrite: "true"
