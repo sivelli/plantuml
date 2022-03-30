@@ -40,7 +40,7 @@ func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFi
 
 	if driveFile != nil {
 		f := &drive.File{
-			Name:     file.Name(),
+			Name:     name,
 			MimeType: mimeType,
 		}
 		_, err = svc.Files.Update(driveFile.Id, f).AddParents(folderId).Media(file).Do()
@@ -150,7 +150,7 @@ func main() {
 			uploadToDrive(svc, filename, folderId, nil, name, mimeType)
 		} else {
 			fmt.Printf("Overwriting file: %s (%s)\n", currentFile.Name, currentFile.Id)
-			uploadToDrive(svc, filename, folderId, currentFile, "", mimeType)
+			uploadToDrive(svc, filename, folderId, currentFile, name, mimeType)
 		}
 	} else {
 		uploadToDrive(svc, filename, folderId, nil, name, mimeType)
