@@ -1,8 +1,8 @@
 @startuml System detailed
 
 activate A
-A -> B++: Call
-B -> C++: Call
+A -> B++: Call 2
+B -> C++: Call 3
 return response
 return response
 deactivate A
