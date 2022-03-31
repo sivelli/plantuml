@@ -24,14 +24,14 @@ import (
 )
 
 const (
-	scope            = "https://www.googleapis.com/auth/drive.file"
-	filenameInput    = "filename"
-	nameInput        = "name"
-	folderIdInput    = "folderId"
-	credentialsInput = "credentials"
-	overwrite        = "false"
-	mimeTypeInput    = "mimeType"
-	useSourceName    = "useSourceFilenameAsName"
+	scope                 = "https://www.googleapis.com/auth/drive.file"
+	filenameInput         = "filename"
+	nameInput             = "name"
+	folderIdInput         = "folderId"
+	credentialsInput      = "credentials"
+	overwrite             = "false"
+	mimeTypeInput         = "mimeType"
+	useCompleteSourceName = "useCompleteSourceFilenameAsName"
 )
 
 func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFile *drive.File, name string, mimeType string) {
@@ -74,6 +74,9 @@ func main() {
 	if err != nil {
 		githubactions.Fatalf(fmt.Sprintf("Invalid filename pattern: %v", err))
 	}
+	if len(files) == 0 {
+		githubactions.Fatalf("No filename found")
+	}
 
 	// get overwrite flag
 	var overwriteFlag bool
@@ -93,8 +96,17 @@ func main() {
 		missingInput(folderIdInput)
 	}
 
-	// get filename argument from action input
+	// get file mimeType argument from action input
 	mimeType := githubactions.GetInput(mimeTypeInput)
+
+	var useCompleteSourceFilenameAsNameFlag bool
+	useCompleteSourceFilenameAsName := githubactions.GetInput(useCompleteSourceName)
+	if useCompleteSourceFilenameAsName == "" {
+		githubactions.Warningf("useCompleteSourceFilenameAsName is disabled.")
+		useCompleteSourceFilenameAsNameFlag = false
+	} else {
+		useCompleteSourceFilenameAsNameFlag, _ = strconv.ParseBool(useCompleteSourceFilenameAsName)
+	}
 
 	// get base64 encoded credentials argument from action input
 	credentials := githubactions.GetInput(credentialsInput)
@@ -128,14 +140,28 @@ func main() {
 		log.Println(err)
 	}
 
-	if name == "" {
-		file, err := os.Open(filename)
-		if err != nil {
-			githubactions.Fatalf(fmt.Sprintf("opening file with filename: %v failed with error: %v", filename, err))
+	useSourceFilename := len(files) > 1
+
+	for _, file := range files {
+		var targetName string
+		if useCompleteSourceFilenameAsNameFlag {
+			targetName = file
+		} else if useSourceFilename || name == "" {
+			targetName = filepath.Base(file)
+		} else {
+			targetName = name
 		}
-		name = file.Name()
+
+		uploadFile(svc, file, folderId, targetName, mimeType, overwriteFlag)
 	}
-	fmt.Printf("file name: %s\n", name)
+}
+
+func uploadFile(svc *drive.Service, filename string, folderId string, name string, mimeType string, overwriteFlag bool) {
+
+	if name == "" {
+		githubactions.Fatalf("Could not discover target file name")
+	}
+	fmt.Printf("target file name: %s\n", name)
 
 	if overwriteFlag {
 		r, err := svc.Files.List().Fields("files(name,id,mimeType,parents)").Do()

@@ -23,7 +23,7 @@ inputs:
   mimeType:
     description: 'file MimeType. If absent, Google Drive will attempt to automatically detect an appropriate value'
     required: false
-  useSourceFilenameAsName:
+  useCompleteSourceFilenameAsName:
     description: 'If true, the target file name will be the source filename and name parameter will be ignored'
     required: false
 
