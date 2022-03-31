@@ -41,4 +41,3 @@ jobs:
           name: "DOC_teste2.svg"
           folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
           overwrite: "true"
-          mimeType: "image/svg+xml"
