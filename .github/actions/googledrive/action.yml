@@ -26,6 +26,9 @@ inputs:
   useCompleteSourceFilenameAsName:
     description: 'If true, the target file name will be the source filename and name parameter will be ignored'
     required: false
+  namePrefix:
+    description: 'Prefix to be added in filename'
+    required: false
 
 runs:
   using: docker

@@ -32,6 +32,7 @@ const (
 	overwrite             = "false"
 	mimeTypeInput         = "mimeType"
 	useCompleteSourceName = "useCompleteSourceFilenameAsName"
+	namePrefixInput       = "namePrefix"
 )
 
 func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFile *drive.File, name string, mimeType string) {
@@ -108,6 +109,9 @@ func main() {
 		useCompleteSourceFilenameAsNameFlag, _ = strconv.ParseBool(useCompleteSourceFilenameAsName)
 	}
 
+	// get filename prefix
+	filenamePrefix := githubactions.GetInput(namePrefixInput)
+
 	// get base64 encoded credentials argument from action input
 	credentials := githubactions.GetInput(credentialsInput)
 	if credentials == "" {
@@ -151,16 +155,17 @@ func main() {
 		} else {
 			targetName = name
 		}
-
+		if name == "" {
+			githubactions.Fatalf("Could not discover target file name")
+		} else if filenamePrefix != "" {
+			targetName = filenamePrefix + targetName
+		}
 		uploadFile(svc, file, folderId, targetName, mimeType, overwriteFlag)
 	}
 }
 
 func uploadFile(svc *drive.Service, filename string, folderId string, name string, mimeType string, overwriteFlag bool) {
 
-	if name == "" {
-		githubactions.Fatalf("Could not discover target file name")
-	}
 	fmt.Printf("target file name: %s\n", name)
 
 	if overwriteFlag {
