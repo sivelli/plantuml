@@ -150,6 +150,10 @@ func main() {
 		if err == nil {
 			for _, file := range r.Files {
 				fmt.Printf("Deleting file: %s parents:%v\n", file.Name, file.Parents)
+				err := svc.Files.Delete(file.Id).Do()
+				if err != nil {
+					fmt.Printf("Error deleting file: %v\n", err)
+				}
 			}
 		}
 	}
