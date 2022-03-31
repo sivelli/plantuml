@@ -32,4 +32,3 @@ jobs:
           overwrite: "true"
           mimeType: "image/svg+xml"
           namePrefix: "DOC_"
-          deleteAll: "true"

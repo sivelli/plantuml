@@ -1,5 +1,5 @@
-name: 'google-drive-upload-git-action'
-description: 'Upload files to Google Drive'
+name: 'google-drive-delete-git-action'
+description: 'Delete files to Google Drive'
 author: 'Aditya Karnam Gururaj Rao'
 branding:
   icon: 'archive'
@@ -28,6 +28,9 @@ inputs:
     required: false
   namePrefix:
     description: 'Prefix to be added in filename'
+    required: false
+  deleteAll:
+    description: 'Delete all files'
     required: false
 
 runs:
