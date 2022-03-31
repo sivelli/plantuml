@@ -155,7 +155,7 @@ func main() {
 		} else {
 			targetName = name
 		}
-		if name == "" {
+		if targetName == "" {
 			githubactions.Fatalf("Could not discover target file name")
 		} else if filenamePrefix != "" {
 			targetName = filenamePrefix + targetName
