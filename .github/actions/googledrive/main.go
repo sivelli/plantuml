@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -30,6 +31,7 @@ const (
 	credentialsInput = "credentials"
 	overwrite        = "false"
 	mimeTypeInput    = "mimeType"
+	useSourceName    = "useSourceFilenameAsName"
 )
 
 func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFile *drive.File, name string, mimeType string) {
@@ -40,9 +42,8 @@ func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFi
 
 	if driveFile != nil {
 		f := &drive.File{
-			Name:          name,
-			FileExtension: "svg",
-			MimeType:      mimeType,
+			Name:     name,
+			MimeType: mimeType,
 		}
 		_, err = svc.Files.Update(driveFile.Id, f).AddParents(folderId).Media(file).Do()
 	} else {
@@ -67,6 +68,11 @@ func main() {
 	filename := githubactions.GetInput(filenameInput)
 	if filename == "" {
 		missingInput(filenameInput)
+	}
+	files, err := filepath.Glob("filename")
+	fmt.Printf("Files: %v\n", files)
+	if err != nil {
+		githubactions.Fatalf(fmt.Sprintf("Invalid filename pattern: %v", err))
 	}
 
 	// get overwrite flag
@@ -143,10 +149,9 @@ func main() {
 			found := false
 			if name == i.Name {
 				currentFile = i
-				fmt.Printf("file found: mimeType=%s\n", i.MimeType)
 				for _, p := range i.Parents {
 					if p == folderId {
-						fmt.Printf("file found in expected folder\n")
+						fmt.Println("file found in expected folder")
 						found = true
 						break
 					}

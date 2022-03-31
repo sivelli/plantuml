@@ -21,9 +21,11 @@ inputs:
     description: 'if you want to overwrite an existing file in Google Drive '
     required: false
   mimeType:
-    description: 'file MimeType'
+    description: 'file MimeType. If absent, Google Drive will attempt to automatically detect an appropriate value'
     required: false
-  
+  useSourceFilenameAsName:
+    description: 'If true, the target file name will be the source filename and name parameter will be ignored'
+    required: false
 
 runs:
   using: docker
