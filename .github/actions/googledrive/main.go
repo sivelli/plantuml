@@ -69,7 +69,7 @@ func main() {
 	if filename == "" {
 		missingInput(filenameInput)
 	}
-	files, err := filepath.Glob("filename")
+	files, err := filepath.Glob(filename)
 	fmt.Printf("Files: %v\n", files)
 	if err != nil {
 		githubactions.Fatalf(fmt.Sprintf("Invalid filename pattern: %v", err))
