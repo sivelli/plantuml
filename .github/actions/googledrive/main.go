@@ -142,9 +142,10 @@ func main() {
 			found := false
 			if name == i.Name {
 				currentFile = i
+				fmt.Printf("file found: mimeType=%s\n", i.MimeType)
 				for _, p := range i.Parents {
 					if p == folderId {
-						fmt.Printf("file found at expected folder\n")
+						fmt.Printf("file found in expected folder\n")
 						found = true
 						break
 					}
