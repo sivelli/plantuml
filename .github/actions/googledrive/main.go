@@ -142,8 +142,8 @@ func main() {
 			found := false
 			if name == i.Name {
 				currentFile = i
+				fmt.Printf("found: Parents: %v\n", i.Parents)
 				for _, p := range i.Parents {
-					fmt.Printf("Parent: %s\n", p)
 					if p == folderId {
 						fmt.Printf("file found. parent: %s\n", p)
 						found = true
