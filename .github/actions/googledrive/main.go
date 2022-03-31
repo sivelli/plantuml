@@ -40,8 +40,9 @@ func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFi
 
 	if driveFile != nil {
 		f := &drive.File{
-			Name:     name,
-			MimeType: mimeType,
+			Name:          name,
+			FileExtension: "svg",
+			MimeType:      mimeType,
 		}
 		_, err = svc.Files.Update(driveFile.Id, f).AddParents(folderId).Media(file).Do()
 	} else {
