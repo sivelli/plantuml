@@ -139,8 +139,18 @@ func main() {
 		fmt.Printf("Files: %d\n", len(r.Files))
 		var currentFile *drive.File = nil
 		for _, i := range r.Files {
+			found := false
 			if name == i.Name {
 				currentFile = i
+				for _, p := range i.Parents {
+					if p == folderId {
+						fmt.Printf("file found. parent: %s\n", p)
+						found = true
+						break
+					}
+				}
+			}
+			if found {
 				break
 			}
 		}
