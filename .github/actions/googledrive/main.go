@@ -102,7 +102,7 @@ func main() {
 	var useCompleteSourceFilenameAsNameFlag bool
 	useCompleteSourceFilenameAsName := githubactions.GetInput(useCompleteSourceName)
 	if useCompleteSourceFilenameAsName == "" {
-		githubactions.Warningf("useCompleteSourceFilenameAsName is disabled.")
+		fmt.Println("useCompleteSourceFilenameAsName is disabled.")
 		useCompleteSourceFilenameAsNameFlag = false
 	} else {
 		useCompleteSourceFilenameAsNameFlag, _ = strconv.ParseBool(useCompleteSourceFilenameAsName)
