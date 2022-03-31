@@ -76,7 +76,7 @@ func main() {
 		githubactions.Fatalf(fmt.Sprintf("Invalid filename pattern: %v", err))
 	}
 	if len(files) == 0 {
-		githubactions.Fatalf("No filename found")
+		githubactions.Fatalf(fmt.Sprintf("No file found! pattern: %s", filename))
 	}
 
 	// get overwrite flag
