@@ -27,8 +27,9 @@ jobs:
         uses: ./.github/actions/googledrive
         with:
           credentials: ${{ secrets.DRIVEDOC_CREDENTIALS }}
-          filename: "./diagrams/out/diagrams/*.svg"
+          filename: "./diagrams/out/diagrams/*.svgx"
           folderId: ${{ secrets.DRIVEDOC_FOLDERID }}
           overwrite: "true"
           mimeType: "image/svg+xml"
-          useCompleteSourceFilenameAsName: "true"
+          namePrefix: "DOC_"
+          deleteAll: "true"
