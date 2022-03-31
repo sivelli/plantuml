@@ -131,7 +131,7 @@ func main() {
 	fmt.Printf("file name: %s\n", name)
 
 	if overwriteFlag {
-		r, err := svc.Files.List().Fields("kind,name,id,mimeType,parents").Do()
+		r, err := svc.Files.List().Fields("files(name,id,mimeType,parents)").Do()
 		if err != nil {
 			log.Fatalf("Unable to retrieve files: %v", err)
 			fmt.Println("Unable to retrieve files")
