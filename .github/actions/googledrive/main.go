@@ -64,6 +64,7 @@ func uploadToDrive(svc *drive.Service, filename string, folderId string, driveFi
 }
 
 func main() {
+	deleteAll := githubactions.GetInput("deleteAll")
 
 	// get filename argument from action input
 	filename := githubactions.GetInput(filenameInput)
@@ -75,7 +76,7 @@ func main() {
 	if err != nil {
 		githubactions.Fatalf(fmt.Sprintf("Invalid filename pattern: %v", err))
 	}
-	if len(files) == 0 {
+	if len(files) == 0 && deleteAll == "" {
 		githubactions.Fatalf("No filename found")
 	}
 
@@ -144,7 +145,6 @@ func main() {
 		log.Println(err)
 	}
 
-	deleteAll := githubactions.GetInput("deleteAll")
 	if deleteAll != "" {
 		r, err := svc.Files.List().Fields("files(name,id,mimeType,parents)").Do()
 		if err == nil {
