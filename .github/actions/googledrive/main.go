@@ -144,6 +144,16 @@ func main() {
 		log.Println(err)
 	}
 
+	deleteAll := githubactions.GetInput("deleteAll")
+	if deleteAll != "" {
+		r, err := svc.Files.List().Fields("files(name,id,mimeType,parents)").Do()
+		if err == nil {
+			for _, file := range r.Files {
+				fmt.Printf("Deleting file: %s parents:%v\n", file.Name, file.Parents)
+			}
+		}
+	}
+
 	useSourceFilename := len(files) > 1
 
 	for _, file := range files {

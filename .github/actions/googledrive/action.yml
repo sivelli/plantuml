@@ -29,6 +29,9 @@ inputs:
   namePrefix:
     description: 'Prefix to be added in filename'
     required: false
+  deleteAll:
+    description: 'Delete all files'
+    required: false
 
 runs:
   using: docker
